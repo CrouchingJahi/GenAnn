@@ -66,10 +66,45 @@ class MicroRNA(models.Model):
     strand = models.CharField(max_length=1)
     class Meta:
         db_table = u'microrna'
+        
+        
+class SNP1(models.Model):
+    id = models.IntegerField(primary_key=True)
+    chrom = models.CharField(max_length=255)
+    rsno = models.CharField(max_length=45)
+    start = models.IntegerField()
+    end = models.IntegerField()
+    strand = models.CharField(max_length=1)
+    class Meta:
+        db_table = u'dbsnp_chr1'
+        
+class SNP2(models.Model):
+    id = models.IntegerField(primary_key=True)
+    chrom = models.CharField(max_length=255)
+    rsno = models.CharField(max_length=45)
+    start = models.IntegerField()
+    end = models.IntegerField()
+    strand = models.CharField(max_length=1)
+    class Meta:
+        db_table = u'dbsnp_chr2'
     
-class GeneForm(forms.Form):
-    chrom = forms.CharField(required=False)
-    strand = forms.CharField(required=False)
-    startf = forms.IntegerField(required=False)
-    endf = forms.IntegerField(required=False)
+class SNP3(models.Model):
+    id = models.IntegerField(primary_key=True)
+    chrom = models.CharField(max_length=255)
+    rsno = models.CharField(max_length=45)
+    start = models.IntegerField()
+    end = models.IntegerField()
+    strand = models.CharField(max_length=1)
+    class Meta:
+        db_table = u'dbsnp_chr3'
+    
+# class GeneForm(forms.Form):
+    # chrom = forms.CharField(required=False)
+    # strand = forms.CharField(required=False)
+    # startf = forms.IntegerField(required=False)
+    # endf = forms.IntegerField(required=False)
+    
+class DBSForm(forms.Form):
+    rsno = forms.CharField(required=False)
+    name = forms.CharField(required=False)
     

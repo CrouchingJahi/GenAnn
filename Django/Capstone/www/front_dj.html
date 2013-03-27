@@ -1,0 +1,349 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<link href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_URL }}boootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_URL }}bootstrap/css/fineuploader.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_URL }}css/styles.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://malsup.github.com/jquery.form.js"></script> 
+
+<script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}jquery/multifile_compressed.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/jquery.fineuploader-3.0.min.js"></script>
+
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>GenAnn Local</title>
+
+<!--
+LOAD THE XML FILE ON THE SERVER
+XML="queryoptions.xml"
+CODE FROM W3SCHOOLS
+-->
+<script>
+  if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+      xmlhttp=new XMLHttpRequest();
+    }
+  else
+      {// code for IE6, IE5
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+  xmlhttp.open("GET","{{ STATIC_URL }}queryoptions.xml",false);
+  xmlhttp.send();
+  xmlDoc=xmlhttp.responseXML; 
+</script>
+
+<!--
+///////////
+CSS STYLES
+///////////
+-->
+<style>
+
+.buttonheader
+{
+  margin:auto;
+  width:1000px;
+}
+
+.tableheader
+{
+  height:23px;
+  width:100%;
+  background-color:#D9B2B2;
+  border-width: 2px; 
+  border-color: black;
+  border-style: groove;
+  font-size: 140%;
+  text-indent: 20px
+}
+
+.tablebox
+{
+  height:100%;
+  width:1000px;
+  padding:0px;
+  border:none;
+  margin:0px;
+  margin-left:auto;
+  margin-right:auto;
+  font-size:80%;   
+}
+
+body
+{
+  background-image:url("{{ STATIC_URL }}img/bgtest.png");
+}
+
+fieldset 
+{ 
+  border:0px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="buttonheader">
+  <img src="{{ STATIC_URL }}img/title2.png">
+</div>
+
+<form class="form-horizontal" action="/result/" method="get">
+<fieldset>
+<font FACE="arial">
+
+<!-- 
+/////////////
+QUERY OPTIONS
+/////////////
+-->  
+<div class = "tablebox">
+  <table border="1" cellspacing="0" cellpadding="0">
+    <col width="220">
+    <col width="800">
+
+    <div class = "tableheader">
+    User Details
+    </div>    
+ 
+    <script>
+      var userdetails=xmlDoc.getElementsByTagName("OPTION");
+      for (var i = 0; i < userdetails.length; i++){
+        document.write("<tr><td height=\"35\" bgcolor=\"#FFFFFF\"><b>");
+        nodeinfo=userdetails[i].firstChild.nodeValue;
+        document.write(nodeinfo);
+        document.write("</b></td>");
+        document.write("<td height=\"35\" bgcolor=\"#E6E6E6\"><input type=\"text\" id=\"search\" data-provide=\"typeahead\" data-items=\"4\" class=\"input-xlarge\" name=\"emailaddr\" /></td>");
+      }
+    </script>
+  </table> 
+</div>
+<br>
+
+<div class = "tablebox">
+  <table border="1" cellspacing="0" cellpadding="0" bordercolor="black">
+    <col width="220">
+    <col width="800">
+    <col height="100">
+
+    <div class = "tableheader">
+    Query Options
+    </div>  
+
+    <tr>
+      <td height="35" bgcolor="#FFFFFF"><b>Assembly</b></td>
+      <td height="35" bgcolor="#E6E6E6">
+      <script>
+      var assembly=xmlDoc.getElementsByTagName("ASSEMBLY");
+      document.write("<select class=\"input-xlarge\">");
+      for (var i = 0; i < assembly.length; i++){
+        nodeinfo=assembly[i].firstChild.nodeValue;
+        document.write("<option>" + nodeinfo +"</option>");
+      }
+      document.write("</select>");
+      </script>
+    </tr>
+
+    <tr>
+      <td height="35" bgcolor="#FFFFFF"><b>Gene Name</b></td>
+      <td height="35" bgcolor="#E6E6E6">
+        <input type="text" name="name" />  
+      </td>
+    </tr>
+    <tr>
+      <td height="35" bgcolor="#FFFFFF"><b>RS No.</b></td>
+      <td height="35" bgcolor="#E6E6E6">
+        <input type="text" name="rsno" />  
+      </td>
+    </tr>
+    <!--tr>
+      <td height="35" bgcolor="#FFFFFF"><b>Batch Query</b></td>
+      <td height="35" bgcolor="#E6E6E6">
+        <input class="input-file" id="fileInput" type="file" size="41">
+      </td>
+    </tr>
+    <tr>
+      <td height="35" bgcolor="#FFFFFF"><b>Chromosome No.</b></td>
+      <td height="35" bgcolor="#E6E6E6">
+        <input type="text" name="chrom" />  
+      </td>
+    </tr>
+    <tr>
+      <td height="35" bgcolor="#FFFFFF"><b>Strand</b></td>
+      <td height="35" bgcolor="#E6E6E6">
+        <input type="text" name="strand" />  
+      </td>
+    </tr>
+    <tr>
+      <td height="35" bgcolor="#FFFFFF"><b>Start Location</b></td>
+      <td height="35" bgcolor="#E6E6E6">
+        <input type="text" name="startf" />  
+      </td>
+    </tr>
+    <tr>
+      <td height="35" bgcolor="#FFFFFF"><b>End Location</b></td>
+      <td height="35" bgcolor="#E6E6E6">
+        <input type="text" name="endf" />  
+      </td>
+    </tr-->
+  </table> 
+</div>
+<br>
+
+<!-- 
+/////////////////////
+Annotation Categories
+/////////////////////
+-->  
+
+<div class = "tablebox">
+  <table border="1" cellspacing="0" cellpadding="0">
+    <col width="220">
+    <col width="800">
+    <col height="100">
+    
+    <div class = "tableheader">
+    Annotation Categories
+    </div>   
+
+    <tr>
+      <td height="35"  bgcolor="#FFFFFF"><b>Gene/Protein Consequences </b></td>
+      <td height="35" bgcolor="#E6E6E6">
+      <script>
+      var gpcon=xmlDoc.getElementsByTagName("GPCON");
+      for (var i = 0; i < gpcon.length; i++){
+        document.write("<label class=\"checkbox inline\">");
+        nodeinfo=gpcon[i].firstChild.nodeValue;
+        document.write("<input type=\"checkbox\" value=" + nodeinfo + " name=\"databases\"/>");
+        document.write(nodeinfo);
+        document.write("</label>");
+      }
+      </script>
+      </td>
+    </tr>
+
+    <tr>
+      <td height="35"  bgcolor="#FFFFFF"><b>Includes</b></td>
+      <td height="35" bgcolor="#E6E6E6">
+      <script>
+      var includes=xmlDoc.getElementsByTagName("INCLUDES");
+      for (var i = 0; i < includes.length; i++){
+        document.write("<label class=\"checkbox inline\">");
+        nodeinfo=includes[i].firstChild.nodeValue;
+        document.write("<input type=\"checkbox\" value=" + nodeinfo + " name=\"includes\" />");
+        document.write(nodeinfo);
+        document.write("</label>");
+      }
+      </script>
+
+    <tr>
+      <td height="35" bgcolor="#FFFFFF"><b>HapMap Population Data </b></td>
+      <td height="35" bgcolor="#E6E6E6">
+      <script>
+      var hmap=xmlDoc.getElementsByTagName("HMAP");
+      for (var i = 0; i < hmap.length; i++){
+        document.write("<label class=\"checkbox inline\">");
+        nodeinfo=hmap[i].firstChild.nodeValue;
+        document.write("<input type=\"checkbox\" value=" + nodeinfo + " name=\"hapmap\" />");
+        document.write(nodeinfo);
+        document.write("</label>");
+      }
+      </script>
+      </td>
+    </tr>
+
+    <tr>
+      <td height="35" bgcolor="#FFFFFF"><b>Regulatory Elements </b></td>
+      <td height="35" bgcolor="#E6E6E6">
+      <script>
+      var regeele=xmlDoc.getElementsByTagName("REGELEMENTS");
+      for (var i = 0; i < regeele.length; i++){
+        document.write("<label class=\"checkbox inline\">");
+        nodeinfo=regeele[i].firstChild.nodeValue;
+        document.write("<input type=\"checkbox\" value=" + nodeinfo + " name=\"regulatory\" />");
+        document.write(nodeinfo);
+        document.write("</label>");
+        document.write("\<br\>");
+      }
+      </script>
+    </tr>
+
+    <tr>
+      <td height="35" bgcolor="#FFFFFF"><b>Conservation</b></td>
+      <td height="35" bgcolor="#E6E6E6">
+      <script>
+      var conservation=xmlDoc.getElementsByTagName("CONSERVATION");
+      for (var i = 0; i < conservation.length; i++){
+        document.write("<label class=\"checkbox inline\">");
+        nodeinfo=conservation[i].firstChild.nodeValue;
+        document.write("<input type=\"checkbox\" value=" + nodeinfo + " name=\"conservation\" />");
+        document.write(nodeinfo);
+        document.write("</label>");
+        document.write("\<br\>");
+      }
+      </script>
+    </tr>
+
+    <tr>
+      <td height="35" bgcolor="#FFFFFF"><b>Phenotype and Disease Association</b></td>
+      <td height="35" bgcolor="#E6E6E6">
+      <script>
+      var pda=xmlDoc.getElementsByTagName("PDASSOCIATION");
+      for (var i = 0; i < pda.length; i++){
+        document.write("<label class=\"checkbox inline\">");
+        nodeinfo=pda[i].firstChild.nodeValue;
+        document.write("<input type=\"checkbox\" value=" + nodeinfo + " name=\"phenotype\" />");
+        document.write(nodeinfo);
+        document.write("</label>");
+        document.write("\<br\>");
+      }
+      </script>
+    </tr>
+  </table> 
+</div>
+<br>
+
+<!--
+/////////////
+OUTPUT FORMAT
+/////////////
+-->
+
+<div class = "tablebox">
+  <table border="1" cellspacing="0" cellpadding="0">
+    <col width="220">
+    <col width="800">
+    <col height="100">
+    
+    <div class = "tableheader">
+    Output Options
+    </div>
+
+    <tr>
+      <td height="35" bgcolor="#FFFFFF"><b>Zipped content</b></td>
+      <td height="35" bgcolor="#E6E6E6">
+        <label class="checkbox inline">
+        <input type="checkbox" value="text" name="zipped"/>
+        Text
+        </label>
+        <label class="checkbox inline">
+        <input type="checkbox" value="vcf" name="zipped"/>
+        VCF
+        </label>
+      </td>
+    </tr>
+  </table>
+</div>
+<br>
+</font>
+<input type="submit" />
+</fieldset>
+</form>
+</body>
+
+</html>

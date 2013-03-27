@@ -1,0 +1,48 @@
+<REQUEST>
+
+	<USERDETAILS>
+		<OPTION>Email address (optional)</OPTION>
+		<OPTION>Dataset name (optional)</OPTION>
+	</USERDETAILS>
+
+	<QUERYOPTIONS>
+		<ASSEMBLY>Hg19</ASSEMBLY>
+	</QUERYOPTIONS>
+
+	<ANNOTATIONCATEGORIES>
+		<GPCON>RefSeq</GPCON>
+		<GPCON>Ensembl</GPCON>
+
+		<INCLUDES>ncRNA</INCLUDES>
+		<INCLUDES>CpG Islands</INCLUDES>
+
+		<HMAP>CEU</HMAP>
+		<HMAP>YRI</HMAP>
+		<HMAP>CHB</HMAP>
+		<HMAP>JPT</HMAP>
+		<HMAP>ASW</HMAP>
+		<HMAP>CHD</HMAP>
+		<HMAP>GIH</HMAP>
+		<HMAP>LWK</HMAP>
+		<HMAP>MEX</HMAP>
+		<HMAP>MKK</HMAP>
+		<HMAP>TSI</HMAP>
+
+		<REGELEMENTS>Conserved Transcription Factor Binding Sites (TFBS)</REGELEMENTS>
+		<REGELEMENTS>microRNA (miRBASE)</REGELEMENTS>
+		<REGELEMENTS>CpG Islands (UCSC database)</REGELEMENTS>
+		<REGELEMENTS>TargetScan miRNA Regulatory Sites</REGELEMENTS>
+		<REGELEMENTS>lincRNA (Broad Institute)</REGELEMENTS>
+		<REGELEMENTS>lncRNA</REGELEMENTS>
+		<REGELEMENTS>Enhancers</REGELEMENTS>
+
+		<CONSERVATION>Vertebrate Alignment and Conservation (PHAST)</CONSERVATION>
+		<CONSERVATION>Genomic Evolutionary Rate Profiling (GERP++)</CONSERVATION>
+
+		<PDASSOCIATION>Genetic Association of Complex Diseases and Disorders (GAD)</PDASSOCIATION>
+		<PDASSOCIATION>Catalogue of Somatic Mutations in Cancer (COSMIC)</PDASSOCIATION>
+		<PDASSOCIATION>NHGRI Catalogue of Published Genome-Wide Association Studies</PDASSOCIATION>
+
+	</ANNOTATIONCATEGORIES>
+
+</REQUEST>
