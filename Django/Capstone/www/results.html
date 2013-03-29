@@ -127,7 +127,7 @@ Top info
         Number of SNPs in query:
         </td>
         <td align="center">
-        {{ refgenecount }}
+        {{ snps|length }}
         </td>
         <tr>
     </table>
@@ -193,6 +193,52 @@ Navigation table
     <table width="100%" >
 
     <div class = "tableheader">
+        <font size="4"> DBSNP Results </font><a href= "#top"> <u>Top</u></a>   
+    </div>
+
+        <tr>
+            <td>
+            <div class="results">
+                Results found: {{ snps|length }}
+            </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+            <div class="nestedtable">
+            <table align="center" width="100%" bgcolor="white"  border="1" cellspacing="0" cellpadding="0">
+            <tr>
+                <th>RS No.</th>
+                <th>Chromosome</th>
+                <th>Strand</th>
+                <th>Start</th>
+                <th>End</th>
+            </tr> 
+
+            {% for s in snps %}
+            <tr>
+                <td>{{ s.rsno }}</td>
+                <td>{{ s.chrom }}</td>
+                <td>{{ s.strand }}</td>
+                <td>{{ s.start }}</td>
+                <td>{{ s.end }}</td>
+            </tr>
+            {% endfor %}
+
+            </td>
+        </tr>
+    </table>
+    </div>
+</td>
+</table>
+</div>
+<br />
+
+<div class = "tablebox">
+    <table width="100%" >
+
+    <div class = "tableheader">
         <font size="4"> Consequences on RefGene </font><a href= "#top"> <u>Top</u></a>   
     </div>
 
@@ -209,23 +255,21 @@ Navigation table
             <div class="nestedtable">
             <table align="center" width="100%" bgcolor="white"  border="1" cellspacing="0" cellpadding="0">
             <tr>
-                <th>Name</th>
+                <th>Gene Name</th>
                 <th>Chromosome</th>
                 <th>Strand</th>
-                <th>txStart</th>
-                <th>txEnd</th>
+                <th>Start</th>
+                <th>End</th>
             </tr> 
 
             {% for r in refgene %}
-
             <tr>
-                <td><a href="http://www.ncbi.nlm.nih.gov/nuccore/{{ r.name }}" target="_blank">{{ r.name }}</a></td>
+                <td>{{ r.name }}</td>
                 <td>{{ r.chrom }}</td>
                 <td>{{ r.strand }}</td>
                 <td>{{ r.txstart }}</td>
                 <td>{{ r.txend }}</td>
             </tr>
-       
             {% endfor %}
 
             </td>
@@ -235,9 +279,7 @@ Navigation table
 </td>
 </table>
 </div>
-
-<br>
-
+<br />
 <div class = "tablebox" id="micro">
     <table width="100%" >
 
@@ -282,9 +324,7 @@ Navigation table
 </td>
 </table>
 </div>
-
-<br>
-
+<br />
 <div class = "tablebox" id="lnc">
     <table width="100%" >
 
@@ -329,9 +369,7 @@ Navigation table
 </td>
 </table>
 </div>
-
-<br>
-
+<br />
 <div class = "tablebox" id="linc">
     <table width="100%" >
     <div class = "tableheader">
@@ -364,6 +402,94 @@ Navigation table
                 <td>{{ r.strand }}</td>
                 <td>{{ r.start }}</td>
                 <td>{{ r.end }}</td>
+            </tr>
+       
+            {% endfor %}
+            
+            </td>
+        </tr>
+    </table>
+    </div>
+</td>
+</table>
+</div>
+<br>
+<div class = "tablebox" id="cpgi">
+    <table width="100%" >
+    <div class = "tableheader">
+        <font size="4"> CPGIslands  </font><a href= "#top"> <u>Top</u></a>   
+    </div>
+
+        <tr>
+            <td>
+            <div class="results">
+                Results found: {{ cpgislands|length }}
+            </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+            <div class="nestedtable">
+            <table align="center" width="100%" bgcolor="white" border="1" cellspacing="0" cellpadding="0">
+            <tr>
+                <th>Name</th>
+                <th>Chromosome</th>
+                <th>Start</th>
+                <th>End</th>
+            </tr> 
+
+            {% for r in cpgislands %}
+
+            <tr>
+                <td>{{ r.name }}</td>
+                <td>{{ r.chrom }}</td>
+                <td>{{ r.chromstart }}</td>
+                <td>{{ r.chromend }}</td>
+            </tr>
+       
+            {% endfor %}
+            
+            </td>
+        </tr>
+    </table>
+    </div>
+</td>
+</table>
+</div>
+<br>
+<div class = "tablebox" id="vsta">
+    <table width="100%" >
+    <div class = "tableheader">
+        <font size="4"> VistaEnhancers  </font><a href= "#top"> <u>Top</u></a>   
+    </div>
+
+        <tr>
+            <td>
+            <div class="results">
+                Results found: {{ vistaenhancers|length }}
+            </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+            <div class="nestedtable">
+            <table align="center" width="100%" bgcolor="white" border="1" cellspacing="0" cellpadding="0">
+            <tr>
+                <th>Name</th>
+                <th>Chromosome</th>
+                <th>Start</th>
+                <th>End</th>
+            </tr> 
+
+            {% for r in vistaenhancers %}
+
+            <tr>
+                <td>{{ r.name }}</td>
+                <td>{{ r.chrom }}</td>
+                <td>{{ r.chromstart }}</td>
+                <td>{{ r.chromend }}</td>
             </tr>
        
             {% endfor %}

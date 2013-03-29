@@ -67,7 +67,33 @@ class MicroRNA(models.Model):
     class Meta:
         db_table = u'microrna'
         
-        
+class CPGIslands(models.Model):
+    id = models.IntegerField(primary_key=True)
+    bin = models.IntegerField()
+    chrom = models.CharField(max_length=255)
+    chromstart = models.IntegerField(db_column='chromStart')
+    chromend = models.IntegerField(db_column='chromEnd')
+    name = models.CharField(max_length=255)
+    length = models.IntegerField()
+    cpgnum = models.IntegerField(db_column='cpgNum')
+    gcnum = models.IntegerField(db_column='gcNum')
+    percpg = models.FloatField(db_column='perCpg')
+    pergc = models.FloatField(db_column='perGc')
+    obsexp = models.FloatField(db_column='obsExp')
+    class Meta:
+        db_table = u'cpgislandext'
+
+class VistaEnhancers(models.Model):
+    id = models.IntegerField(primary_key=True)
+    bin = models.IntegerField()
+    chrom = models.CharField(max_length=255)
+    chromstart = models.IntegerField(db_column='chromStart')
+    chromend = models.IntegerField(db_column='chromEnd')
+    name = models.CharField(max_length=255)
+    score = models.IntegerField()
+    class Meta:
+        db_table = u'vistaenhancers'
+
 class SNP1(models.Model):
     id = models.IntegerField(primary_key=True)
     chrom = models.CharField(max_length=255)

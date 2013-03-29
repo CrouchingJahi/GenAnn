@@ -1,7 +1,7 @@
 from django.template import RequestContext, loader
 from django.core import serializers
 from django.http import HttpResponse
-from genedb.models import RefGene, LincRNA, LNCRNA, MicroRNA#, GeneForm
+from genedb.models import RefGene, LincRNA, LNCRNA, MicroRNA, CPGIslands, VistaEnhancers#, GeneForm
 from genedb.models import SNP2, DBSForm
 from genedb import tracks
 import csv
@@ -50,6 +50,11 @@ def result(request):
     where = []
     where.append(table.makeRangeCheck([chrom, strand, min, max]))
     qirna = table.makeQuery(table.orWheres(where))
+    
+    cpgi = cformfilter(CPGIslands.objects.all(), min, max, chrom)
+    
+    vsta = cformfilter(VistaEnhancers.objects.all(), min, max, chrom)
+    
     refg = RefGene.objects.raw(qrefg)
     refgcount = len(list(refg))
     mrna = MicroRNA.objects.raw(qmrna)
@@ -68,7 +73,9 @@ def result(request):
         "refgenecount": refgcount,
         "micrornacount": mrnacount,
         "lncrnacount": lrnacount,
-        "lincrnacount": irnacount
+        "lincrnacount": irnacount,
+        "cpgislands": cpgi,
+        "vistaenhancers": vsta
     })
     return HttpResponse(t.render(c))
     
@@ -101,6 +108,18 @@ def rformfilter(set, min, max, chromosome, strandside):
         set = set.filter(chrom__exact=chromosome)
     if strandside != "":
         set = set.filter(strand__exact=strandside)
+    return set
+
+def cformfilter(set, min, max, chromosome):
+    if min == None and max != None:
+        set = set.filter(end__lte=max)
+    if min != None and max == None:
+        set = set.filter(start__gte=min)
+    if min != None and max != None:
+        set = set.filter(chromstart__range=(min, max))
+        set = set.filter(chromend__range=(min, max))
+    if chromosome != "":
+        set = set.filter(chrom__exact=chromosome)
     return set
     
 def chrtosnp(chr):
