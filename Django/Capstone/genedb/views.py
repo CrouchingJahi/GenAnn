@@ -1,126 +1,91 @@
 from django.template import RequestContext, loader
 from django.core import serializers
 from django.http import HttpResponse
-from genedb.models import RefGene, LincRNA, LNCRNA, MicroRNA, CPGIslands, VistaEnhancers#, GeneForm
-from genedb.models import SNP2, DBSForm
-from genedb import tracks
-import csv
+from genedb.models import *
+# import csv
 
 def index(request):
-    # t = loader.get_template('test.html')
     # form = GeneForm(request.GET)
     # c = RequestContext(request, {'form': form})
-    t = loader.get_template('front_dj.html')
+    t = loader.get_template('front.html')
     c = RequestContext(request, {})
     return HttpResponse(t.render(c))
     
 def result(request):
-    # t = loader.get_template('result2.html')
-    t = loader.get_template('resultst_dj.html')
+    t = loader.get_template('results.html')
     form = DBSForm(request.GET)
     if form.is_valid():
         rsnumber = form.cleaned_data['rsno']
         genename = form.cleaned_data['name']
-    
     # using python script queries
-    rsnumber = str(rsnumber)
     chrgene = RefGene.objects.filter(name__exact=genename)
-    chr = chrgene.latest('id').chrom
-    db = chrtosnp(chr)
-    location = db.objects.filter(rsno__exact=rsnumber) # Should always return 1 item
+    chrm = chrgene.latest('id').chrom
+    db = chrtosnp(chrm)
+    location = db.objects.filter(rsno__exact=rsnumber)
+    
+    #import pdb; pdb.set_trace()
+    
+    # for result in location.iterator():
     result = location.latest('id')
     chrom = result.chrom
     strand = result.strand
     min = str(result.start)
     max = str(result.end)
     
-    table = tracks.Track('refgene', 'id, name, chrom, strand, txStart, txEnd', 'chrom', 'strand', 'txStart', 'txEnd')
-    where = []
-    where.append(table.makeRangeCheck([chrom, strand, min, max]))
-    qrefg = table.makeQuery(table.orWheres(where))
-    table = tracks.Track('microrna', 'id, chrom, strand, start, end', 'chrom', 'strand', 'start', 'end')
-    where = []
-    where.append(table.makeRangeCheck([chrom, strand, min, max]))
-    qmrna = table.makeQuery(table.orWheres(where))
-    table = tracks.Track('lncipedia', 'id, chrom, strand, start, end', 'chrom', 'strand', 'start', 'end')
-    where = []
-    where.append(table.makeRangeCheck([chrom, strand, min, max]))
-    qlrna = table.makeQuery(table.orWheres(where))
-    table = tracks.Track('lincrna', 'id, chrom, strand, start, end', 'chrom', 'strand', 'start', 'end')
-    where = []
-    where.append(table.makeRangeCheck([chrom, strand, min, max]))
-    qirna = table.makeQuery(table.orWheres(where))
-    
-    cpgi = cformfilter(CPGIslands.objects.all(), min, max, chrom)
-    
-    vsta = cformfilter(VistaEnhancers.objects.all(), min, max, chrom)
-    
-    refg = RefGene.objects.raw(qrefg)
-    refgcount = len(list(refg))
-    mrna = MicroRNA.objects.raw(qmrna)
-    mrnacount = len(list(mrna))
-    lrna = LNCRNA.objects.raw(qlrna)
-    lrnacount = len(list(lrna))
-    irna = LincRNA.objects.raw(qirna)
-    irnacount = len(list(irna))
+    refg = RefGene.objects.none()
+    mrna = MicroRNA.objects.none()
+    lrna = LNCRNA.objects.none()
+    irna = LincRNA.objects.none()
+    cpgi = CPGIslands.objects.none()
+    vsta = VistaEnhancers.objects.none()
 
+    for result in location.iterator():
+        chrom = result.chrom
+        strand = result.strand
+        min = str(result.start)
+        max = str(result.end)
+        
+        qrefg = formfilter(RefGene.objects, chrom, strand, min, max)
+        refg = refg | qrefg
+        
+        qmrna = formfilter(MicroRNA.objects, chrom, strand, min, max)
+        mrna = mrna | qmrna
+        qlrna = formfilter(LNCRNA.objects, chrom, strand, min, max)
+        lrna = lrna | qlrna
+        qirna = formfilter(LincRNA.objects, chrom, strand, min, max)
+        irna = irna | qirna
+        
+        qcpgi = cformfilter(CPGIslands.objects, chrom, min, max)
+        cpgi = cpgi | qcpgi
+        qvsta = cformfilter(VistaEnhancers.objects, chrom, min, max)
+        vsta = vsta | qvsta
+    
     c = RequestContext(request, {
         "snps": location,
         "refgene": refg,
         "microrna": mrna,
         "lncrna": lrna,
         "lincrna": irna,
-        "refgenecount": refgcount,
-        "micrornacount": mrnacount,
-        "lncrnacount": lrnacount,
-        "lincrnacount": irnacount,
         "cpgislands": cpgi,
         "vistaenhancers": vsta
     })
     return HttpResponse(t.render(c))
     
 def rsnumber(*args):
-    return 0;
+    return 0
 
-def formfilter(set, min, max, chromosome, strandside):
-    if min == None and max != None:
-        set = set.filter(txend__lte=max)
-    if min != None and max == None:
-        set = set.filter(txstart__gte=min)
-    if min != None and max != None:
-        set = set.filter(txstart__range=(min, max))
-        set = set.filter(txend__range=(min, max))
-    if chromosome != "":
-        set = set.filter(chrom__exact=chromosome)
-    if strandside != "":
-        set = set.filter(strand__exact=strandside)
-    return set
+def formfilter(set, chromosome, strandside, min, max):
+    ret = set.filter(chrom__exact=chromosome)
+    ret = ret.filter(start__lte=min)
+    ret = ret.filter(end__gte=max)
+    ret = ret.filter(strand__exact=strandside)
+    return ret
     
-def rformfilter(set, min, max, chromosome, strandside):
-    if min == None and max != None:
-        set = set.filter(end__lte=max)
-    if min != None and max == None:
-        set = set.filter(start__gte=min)
-    if min != None and max != None:
-        set = set.filter(start__range=(min, max))
-        set = set.filter(end__range=(min, max))
-    if chromosome != "":
-        set = set.filter(chrom__exact=chromosome)
-    if strandside != "":
-        set = set.filter(strand__exact=strandside)
-    return set
-
-def cformfilter(set, min, max, chromosome):
-    if min == None and max != None:
-        set = set.filter(end__lte=max)
-    if min != None and max == None:
-        set = set.filter(start__gte=min)
-    if min != None and max != None:
-        set = set.filter(chromstart__range=(min, max))
-        set = set.filter(chromend__range=(min, max))
-    if chromosome != "":
-        set = set.filter(chrom__exact=chromosome)
-    return set
+def cformfilter(set, chromosome, min, max):
+    ret = set.filter(chrom__exact=chromosome)
+    ret = ret.filter(start__lte=min)
+    ret = ret.filter(end__gte=max)
+    return ret    
     
 def chrtosnp(chr):
     snp = "SNP" + chr[3:]

@@ -14,7 +14,7 @@
 <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/jquery.fineuploader-3.0.min.js"></script>
 
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<title>GenAnn Local</title>
+<title>GenAnn Online</title>
 
 <!--
 ///////////
@@ -245,7 +245,7 @@ Navigation table
         <tr>
             <td>
             <div class="results">
-                Results found: {{ refgenecount }}
+                Results found: {{ refgene|length }}
             </div>
             </td>
         </tr>
@@ -267,8 +267,8 @@ Navigation table
                 <td>{{ r.name }}</td>
                 <td>{{ r.chrom }}</td>
                 <td>{{ r.strand }}</td>
-                <td>{{ r.txstart }}</td>
-                <td>{{ r.txend }}</td>
+                <td>{{ r.start }}</td>
+                <td>{{ r.end }}</td>
             </tr>
             {% endfor %}
 
@@ -290,7 +290,7 @@ Navigation table
         <tr>
             <td>
             <div class="results">
-                Results found: {{ micrornacount }}
+                Results found: {{ microrna|length }}
             </div>
             </td>
         </tr>
@@ -335,7 +335,7 @@ Navigation table
         <tr>
             <td>
             <div class="results">
-                Results found: {{ lncrnacount }}
+                Results found: {{ lncrna|length }}
             </div>
             </td>
         </tr>
@@ -379,7 +379,7 @@ Navigation table
         <tr>
             <td>
             <div class="results">
-                Results found: {{ lincrnacount }}
+                Results found: {{ lincrna|length }}
             </div>
             </td>
         </tr>
@@ -444,8 +444,8 @@ Navigation table
             <tr>
                 <td>{{ r.name }}</td>
                 <td>{{ r.chrom }}</td>
-                <td>{{ r.chromstart }}</td>
-                <td>{{ r.chromend }}</td>
+                <td>{{ r.start }}</td>
+                <td>{{ r.end }}</td>
             </tr>
        
             {% endfor %}
@@ -488,8 +488,8 @@ Navigation table
             <tr>
                 <td>{{ r.name }}</td>
                 <td>{{ r.chrom }}</td>
-                <td>{{ r.chromstart }}</td>
-                <td>{{ r.chromend }}</td>
+                <td>{{ r.start }}</td>
+                <td>{{ r.end }}</td>
             </tr>
        
             {% endfor %}

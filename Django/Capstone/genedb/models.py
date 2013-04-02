@@ -19,8 +19,8 @@ class RefGene(models.Model):
     name = models.CharField(max_length=255, blank=True)
     chrom = models.CharField(max_length=255, blank=True)
     strand = models.CharField(max_length=1, blank=True)
-    txstart = models.IntegerField(null=True, db_column='txStart', blank=True)
-    txend = models.IntegerField(null=True, db_column='txEnd', blank=True)
+    start = models.IntegerField(null=True, db_column='txStart', blank=True)
+    end = models.IntegerField(null=True, db_column='txEnd', blank=True)
     cdsstart = models.IntegerField(null=True, db_column='cdsStart', blank=True)
     cdsend = models.IntegerField(null=True, db_column='cdsEnd', blank=True)
     exoncount = models.IntegerField(null=True, db_column='exonCount', blank=True)
@@ -71,8 +71,8 @@ class CPGIslands(models.Model):
     id = models.IntegerField(primary_key=True)
     bin = models.IntegerField()
     chrom = models.CharField(max_length=255)
-    chromstart = models.IntegerField(db_column='chromStart')
-    chromend = models.IntegerField(db_column='chromEnd')
+    start = models.IntegerField(db_column='chromStart')
+    end = models.IntegerField(db_column='chromEnd')
     name = models.CharField(max_length=255)
     length = models.IntegerField()
     cpgnum = models.IntegerField(db_column='cpgNum')
@@ -87,8 +87,8 @@ class VistaEnhancers(models.Model):
     id = models.IntegerField(primary_key=True)
     bin = models.IntegerField()
     chrom = models.CharField(max_length=255)
-    chromstart = models.IntegerField(db_column='chromStart')
-    chromend = models.IntegerField(db_column='chromEnd')
+    start = models.IntegerField(db_column='chromStart')
+    end = models.IntegerField(db_column='chromEnd')
     name = models.CharField(max_length=255)
     score = models.IntegerField()
     class Meta:
@@ -101,6 +101,8 @@ class SNP1(models.Model):
     start = models.IntegerField()
     end = models.IntegerField()
     strand = models.CharField(max_length=1)
+    def __unicode__(self):
+        return self.rsno
     class Meta:
         db_table = u'dbsnp_chr1'
         
@@ -111,6 +113,8 @@ class SNP2(models.Model):
     start = models.IntegerField()
     end = models.IntegerField()
     strand = models.CharField(max_length=1)
+    def __unicode__(self):
+        return self.rsno
     class Meta:
         db_table = u'dbsnp_chr2'
     
@@ -121,6 +125,8 @@ class SNP3(models.Model):
     start = models.IntegerField()
     end = models.IntegerField()
     strand = models.CharField(max_length=1)
+    def __unicode__(self):
+        return self.rsno
     class Meta:
         db_table = u'dbsnp_chr3'
     
