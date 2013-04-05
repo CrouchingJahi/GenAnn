@@ -1,0 +1,7 @@
+23.22.75.239
+
+To kill server:
+ ps aux | grep manage.py
+
+kill <number of runserver process>
+ Usually, the one that is from /usr/bin/python is the server.

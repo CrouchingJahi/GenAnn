@@ -1,0 +1,5 @@
+mysqldump -u user -p genann > genann.sql
+Upload sql dump to a web location (Currently using Dropbox)
+On AWS,
+ sudo wget (location of file)
+ mysql -u user -p genann < genann.sql
