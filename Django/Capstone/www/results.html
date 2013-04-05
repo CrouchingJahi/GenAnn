@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿{% load endless %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -95,7 +96,7 @@ CSS STYLES
     height:100%;
     width:98%;
     margin:0px;
-    background-color:#E6E6E6;
+    background-color:#FFFFFF;
     margin-left:auto;
     margin-right:auto;
 }
@@ -216,6 +217,7 @@ Navigation table
                 <th>End</th>
             </tr> 
 
+			{% paginate snps using "snps_pages" %}
             {% for s in snps %}
             <tr>
                 <td>{{ s.rsno }}</td>
@@ -225,7 +227,8 @@ Navigation table
                 <td>{{ s.end }}</td>
             </tr>
             {% endfor %}
-
+			{% show_pages %}
+			
             </td>
         </tr>
     </table>
@@ -254,7 +257,7 @@ Navigation table
             <td>
             <div class="nestedtable">
             <table align="center" width="100%" bgcolor="white"  border="1" cellspacing="0" cellpadding="0">
-            <tr>
+            <tr  bgcolor="white" >
                 <th>Gene Name</th>
                 <th>Chromosome</th>
                 <th>Strand</th>
@@ -262,6 +265,7 @@ Navigation table
                 <th>End</th>
             </tr> 
 
+			{% paginate refgene using "refgene_pages" %}
             {% for r in refgene %}
             <tr>
                 <td>{{ r.name }}</td>
@@ -271,6 +275,7 @@ Navigation table
                 <td>{{ r.end }}</td>
             </tr>
             {% endfor %}
+			{% show_pages %}
 
             </td>
         </tr>
@@ -305,9 +310,9 @@ Navigation table
                 <th>Start</th>
                 <th>End</th>
             </tr> 
-
+			
+			{% paginate microrna using "microrna_pages" %}
             {% for r in microrna %}
-
             <tr>
                 <td>{{ r.chrom }}</td>
                 <td>{{ r.strand }}</td>
@@ -316,7 +321,8 @@ Navigation table
             </tr>
        
             {% endfor %}
-            
+            {% show_pages %}
+
             </td>
         </tr>
     </table>
@@ -350,7 +356,8 @@ Navigation table
                 <th>Start</th>
                 <th>End</th>
             </tr> 
-
+			
+			{% paginate lncrna using "lncrna_pages" %}
             {% for r in lncrna %}
 
             <tr>
@@ -361,7 +368,8 @@ Navigation table
             </tr>
        
             {% endfor %}
-            
+            {% show_pages %}
+			
             </td>
         </tr>
     </table>
@@ -395,6 +403,7 @@ Navigation table
                 <th>End</th>
             </tr> 
 
+			{% paginate lincrna using "lincrna_pages" %}
             {% for r in lincrna %}
 
             <tr>
@@ -405,7 +414,8 @@ Navigation table
             </tr>
        
             {% endfor %}
-            
+            {% show_pages %}
+			
             </td>
         </tr>
     </table>
@@ -439,6 +449,7 @@ Navigation table
                 <th>End</th>
             </tr> 
 
+			{% paginate cpgislands using "cpgislands_pages" %}
             {% for r in cpgislands %}
 
             <tr>
@@ -449,7 +460,8 @@ Navigation table
             </tr>
        
             {% endfor %}
-            
+            {% show_pages %}
+			
             </td>
         </tr>
     </table>
@@ -483,6 +495,7 @@ Navigation table
                 <th>End</th>
             </tr> 
 
+			{% paginate vistaenhancers using "vistaenhancers_pages" %}
             {% for r in vistaenhancers %}
 
             <tr>
@@ -493,7 +506,8 @@ Navigation table
             </tr>
        
             {% endfor %}
-            
+            {% show_pages %}
+			
             </td>
         </tr>
     </table>
