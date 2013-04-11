@@ -1,17 +1,5 @@
 from django.db import models
 from django import forms
- 
-# Create your models here.
-
-# class Gene(models.Model):
-    # name = models.CharField(max_length=40)
-    # chrom = models.CharField(max_length=40)
-    # strand = models.CharField(max_length=1)
-    # txStart = models.IntegerField()
-    # txEnd = models.IntegerField()
-    
-    # def __unicode__(self):
-        # return self.name
         
 class RefGene(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -130,6 +118,47 @@ class SNP3(models.Model):
     class Meta:
         db_table = u'dbsnp_chr3'
     
+class GWASCatalog(models.Model):
+    id = models.IntegerField(primary_key=True)
+    dateadded = models.CharField(max_length=10, db_column='dateAdded', blank=True)
+    pubmedid = models.IntegerField(null=True, db_column='pubmedID', blank=True)
+    firstauthor = models.CharField(max_length=255, db_column='firstAuthor', blank=True)
+    pubdate = models.CharField(max_length=10, blank=True)
+    journal = models.CharField(max_length=255, blank=True)
+    link = models.CharField(max_length=255, blank=True)
+    study = models.CharField(max_length=255, blank=True)
+    disease = models.CharField(max_length=255, blank=True)
+    initsamplesize = models.CharField(max_length=255, db_column='initSampleSize', blank=True)
+    replsamplesize = models.CharField(max_length=255, db_column='replSampleSize', blank=True)
+    region = models.CharField(max_length=10, blank=True)
+    chrom = models.CharField(max_length=2, blank=True)
+    pos = models.IntegerField(null=True, blank=True)
+    reportedgenes = models.CharField(max_length=255, db_column='reportedGenes', blank=True)
+    mappedgene = models.CharField(max_length=255, db_column='mappedGene', blank=True)
+    upstreamgeneid = models.IntegerField(null=True, db_column='upstreamGeneID', blank=True)
+    downstreamgeneid = models.IntegerField(null=True, db_column='downstreamGeneID', blank=True)
+    snpgeneids = models.CharField(max_length=255, db_column='snpGeneIDs', blank=True)
+    upstreamgenedistance = models.FloatField(null=True, db_column='upstreamGeneDistance', blank=True)
+    downstreamgenedistance = models.FloatField(null=True, db_column='downstreamGeneDistance', blank=True)
+    riskallele = models.CharField(max_length=255, db_column='riskAllele', blank=True)
+    snps = models.CharField(max_length=255, blank=True)
+    merged = models.CharField(max_length=1, blank=True)
+    snpidcurrent = models.IntegerField(null=True, db_column='snpIDCurrent', blank=True)
+    context = models.CharField(max_length=255, blank=True)
+    intergenic = models.IntegerField(null=True, blank=True)
+    riskallelefrequency = models.CharField(max_length=255, db_column='riskAlleleFrequency', blank=True)
+    pvalue = models.FloatField(null=True, db_column='pValue', blank=True)
+    pvaluemlog = models.FloatField(null=True, db_column='pValuemlog', blank=True)
+    pvaluetext = models.CharField(max_length=255, db_column='pValueText', blank=True)
+    ororbeta = models.CharField(max_length=100, db_column='ORorbeta', blank=True)
+    number_95ci = models.CharField(max_length=40, db_column=u'95CI', blank=True)
+    platform = models.CharField(max_length=255, blank=True)
+    cnv = models.CharField(max_length=1, blank=True)
+    def __unicode__(self):
+        return 'GWAS PubMed ' + self.pubmedid
+    class Meta:
+        db_table = u'gwascatalog'
+
 # class GeneForm(forms.Form):
     # chrom = forms.CharField(required=False)
     # strand = forms.CharField(required=False)
@@ -139,4 +168,7 @@ class SNP3(models.Model):
 class DBSForm(forms.Form):
     rsno = forms.CharField(required=False)
     name = forms.CharField(required=False)
+    
+class FileForm(forms.Form):
+    batch = forms.FileField()
     
