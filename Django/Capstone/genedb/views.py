@@ -25,10 +25,10 @@ def result(request):
     # db = chrtosnp(chrm)
     # location = db.objects.filter(rsno__exact=rsnumber)
     
+    rsnums = []
+    genenames = []
     batch = FileForm(request.POST, request.FILES)
     if batch.is_valid():
-        rsnums = []
-        genenames = []
         rsarray(request.FILES['batch'], rsnums, genenames)
     
     location = SNP1.objects.none()
@@ -38,12 +38,22 @@ def result(request):
     irna = LincRNA.objects.none()
     cpgi = CPGIslands.objects.none()
     vsta = VistaEnhancers.objects.none()
+    gwas = GWASCatalog.objects.none()
     
     gpcons = request.POST.getlist('databases', False)
     inclds = request.POST.getlist('includes', False)
     elmnts = request.POST.getlist('regulatory', False)
     diseas = request.POST.getlist('disease', False)
     
+    if (gpcons == False):
+        gpcons = []
+    if (inclds == False):
+        inclds = []
+    if (elmnts == False):
+        elmnts = []
+    if (diseas == False):
+        diseas = []
+        
     refsc = 'RefSeq' in gpcons
     cpgic = 'CPGIslands' in inclds
     enhac = 'Enhancers' in inclds
