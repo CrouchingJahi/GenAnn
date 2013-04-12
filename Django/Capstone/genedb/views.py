@@ -14,6 +14,7 @@ def index(request):
     
 def result(request):
     t = loader.get_template('results.html')
+    t = loader.get_template('results.html')
     
     # form = DBSForm(request.GET)
     # if form.is_valid():
@@ -24,7 +25,6 @@ def result(request):
     # chrm = chrgene.latest('id').chrom
     # db = chrtosnp(chrm)
     # location = db.objects.filter(rsno__exact=rsnumber)
-    
     rsnums = []
     genenames = []
     batch = FileForm(request.POST, request.FILES)
@@ -40,20 +40,11 @@ def result(request):
     vsta = VistaEnhancers.objects.none()
     gwas = GWASCatalog.objects.none()
     
-    gpcons = request.POST.getlist('databases', False)
-    inclds = request.POST.getlist('includes', False)
-    elmnts = request.POST.getlist('regulatory', False)
-    diseas = request.POST.getlist('disease', False)
+    gpcons = request.POST.getlist('databases', [])
+    inclds = request.POST.getlist('includes', [])
+    elmnts = request.POST.getlist('regulatory', [])
+    diseas = request.POST.getlist('disease', [])
     
-    if (gpcons == False):
-        gpcons = []
-    if (inclds == False):
-        inclds = []
-    if (elmnts == False):
-        elmnts = []
-    if (diseas == False):
-        diseas = []
-        
     refsc = 'RefSeq' in gpcons
     cpgic = 'CPGIslands' in inclds
     enhac = 'Enhancers' in inclds
@@ -122,7 +113,7 @@ def sformfilter(set, chromosome, strandside, min, max):
     ret = formfilter(set, chromosome, min, max)
     ret = ret.filter(strand__exact=strandside)
     return ret
-  
+    
 # Throws a list index out of range error if the input file is not correctly formatted with 2 columns per line and instead only has 1.
 def rsarray(file, rs, gene):
     while 1:
@@ -131,7 +122,7 @@ def rsarray(file, rs, gene):
         parts = string.split(line,'\t')
         rs.append(string.strip(parts[0]))
         gene.append(string.strip(parts[1]))
-
+    
 def chrtosnp(chr):
     snp = "SNP" + chr[3:]
     return eval(snp)

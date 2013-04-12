@@ -170,5 +170,5 @@ class DBSForm(forms.Form):
     name = forms.CharField(required=False)
     
 class FileForm(forms.Form):
-    batch = forms.FileField()
+    batch = forms.FileField(required=False)
     

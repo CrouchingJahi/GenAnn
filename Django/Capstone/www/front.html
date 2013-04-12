@@ -15,7 +15,7 @@
 <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/jquery.fineuploader-3.0.min.js"></script>
 
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<title>GenAnn Online</title>
+<title>GeneAnn Online</title>
 
 <!--
 LOAD THE XML FILE ON THE SERVER
@@ -93,7 +93,8 @@ fieldset
   <img src="{{ STATIC_URL }}img/title2.png">
 </div>
 
-<form class="form-horizontal" action="/result/" method="get">
+<form class="form-horizontal" action="/result/" method="post" enctype="multipart/form-data">
+{% csrf_token %}
 <fieldset>
 <font FACE="arial">
 
@@ -149,7 +150,7 @@ QUERY OPTIONS
       </script>
     </tr>
 
-    <tr>
+    <!--tr>
       <td height="35" bgcolor="#FFFFFF"><b>Gene Name</b></td>
       <td height="35" bgcolor="#E6E6E6">
         <input type="text" name="name" />  
@@ -159,12 +160,6 @@ QUERY OPTIONS
       <td height="35" bgcolor="#FFFFFF"><b>RS No.</b></td>
       <td height="35" bgcolor="#E6E6E6">
         <input type="text" name="rsno" />  
-      </td>
-    </tr>
-    <!--tr>
-      <td height="35" bgcolor="#FFFFFF"><b>Batch Query</b></td>
-      <td height="35" bgcolor="#E6E6E6">
-        <input class="input-file" id="fileInput" type="file" size="41">
       </td>
     </tr>
     <tr>
@@ -191,6 +186,12 @@ QUERY OPTIONS
         <input type="text" name="endf" />  
       </td>
     </tr-->
+    <tr>
+      <td height="35" bgcolor="#FFFFFF"><b>Batch Query</b></td>
+      <td height="35" bgcolor="#E6E6E6">
+        <input class="input-file" id="fileInput" type="file" size="41" name="batch">
+      </td>
+    </tr>
   </table> 
 </div>
 <br>
@@ -242,22 +243,6 @@ Annotation Categories
       </script>
 
     <tr>
-      <td height="35" bgcolor="#FFFFFF"><b>HapMap Population Data </b></td>
-      <td height="35" bgcolor="#E6E6E6">
-      <script>
-      var hmap=xmlDoc.getElementsByTagName("HMAP");
-      for (var i = 0; i < hmap.length; i++){
-        document.write("<label class=\"checkbox inline\">");
-        nodeinfo=hmap[i].firstChild.nodeValue;
-        document.write("<input type=\"checkbox\" value=" + nodeinfo + " name=\"hapmap\" />");
-        document.write(nodeinfo);
-        document.write("</label>");
-      }
-      </script>
-      </td>
-    </tr>
-
-    <tr>
       <td height="35" bgcolor="#FFFFFF"><b>Regulatory Elements </b></td>
       <td height="35" bgcolor="#E6E6E6">
       <script>
@@ -274,30 +259,14 @@ Annotation Categories
     </tr>
 
     <tr>
-      <td height="35" bgcolor="#FFFFFF"><b>Conservation</b></td>
-      <td height="35" bgcolor="#E6E6E6">
-      <script>
-      var conservation=xmlDoc.getElementsByTagName("CONSERVATION");
-      for (var i = 0; i < conservation.length; i++){
-        document.write("<label class=\"checkbox inline\">");
-        nodeinfo=conservation[i].firstChild.nodeValue;
-        document.write("<input type=\"checkbox\" value=" + nodeinfo + " name=\"conservation\" />");
-        document.write(nodeinfo);
-        document.write("</label>");
-        document.write("\<br\>");
-      }
-      </script>
-    </tr>
-
-    <tr>
-      <td height="35" bgcolor="#FFFFFF"><b>Phenotype and Disease Association</b></td>
+      <td height="35" bgcolor="#FFFFFF"><b>Disease Association</b></td>
       <td height="35" bgcolor="#E6E6E6">
       <script>
       var pda=xmlDoc.getElementsByTagName("PDASSOCIATION");
       for (var i = 0; i < pda.length; i++){
         document.write("<label class=\"checkbox inline\">");
         nodeinfo=pda[i].firstChild.nodeValue;
-        document.write("<input type=\"checkbox\" value=" + nodeinfo + " name=\"phenotype\" />");
+        document.write("<input type=\"checkbox\" value=" + nodeinfo + " name=\"disease\" />");
         document.write(nodeinfo);
         document.write("</label>");
         document.write("\<br\>");

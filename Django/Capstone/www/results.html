@@ -15,7 +15,7 @@
 <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/jquery.fineuploader-3.0.min.js"></script>
 
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<title>GenAnn Online</title>
+<title>GeneAnn Online</title>
 
 <!--
 ///////////
@@ -96,7 +96,7 @@ CSS STYLES
     height:100%;
     width:98%;
     margin:0px;
-    background-color:#FFFFFF;
+    background-color:#E6E6E6;
     margin-left:auto;
     margin-right:auto;
 }
@@ -137,9 +137,12 @@ Top info
 
 <div class="toptable">
     <form name="rna">
-        <label><input type="checkbox" name="include" id="cmicro" checked>mirBase</label>
-        <label><input type="checkbox" name="include" id="clnc" checked>LNCipedia</label>
-        <label><input type="checkbox" name="include" id="clinc" checked>Broad University database</label>
+        <label><input type="checkbox" name="include" id="cmicro" checked>microRNAs</label>
+        <label><input type="checkbox" name="include" id="clnc" checked>LNCRNAs</label>
+        <label><input type="checkbox" name="include" id="clinc" checked>LincRNAs</label>
+        <label><input type="checkbox" name="include" id="ccpgi" checked>CPGIslands</label>
+        <label><input type="checkbox" name="include" id="cvsta" checked>VistaEnhancers</label>
+        <label><input type="checkbox" name="include" id="cgwas" checked>NIH GWAS Catalog</label>
     </form>
 </div>
 <script style="text/javascript">
@@ -147,48 +150,34 @@ Top info
         var micro = document.getElementById('cmicro');
         var lnc = document.getElementById('clnc');
         var linc = document.getElementById('clinc');
+        var cpgi = document.getElementById('ccpgi');
+        var vsta = document.getElementById('cvsta');
+        var gwas = document.getElementById('cgwas');
         $('#micro').toggle(micro.checked);
         $('#lnc').toggle(lnc.checked);
         $('#linc').toggle(linc.checked);
+        $('#cpgi').toggle(cpgi.checked);
+        $('#vsta').toggle(vsta.checked);
+        $('#gwas').toggle(gwas.checked);
     });
 </script>
 <br />
-<!--
-Navigation table
--->
-<div class = "navi">
+
+<!--div class = "navi">
     <table>
         <col width="50%">
         <col width="100%">
-        <tr>
-        <td>
-        Navigation:
-        </td>
-        <tr>
-        <td>
-        <a href= "#RefGene"> <u>RefGene</u></a>
-        </td>
-        </tr>
-        <tr>
-        <td>
-        <a href= "#microRNAs"> <u>microRNAs</u></a>
-        </td>
-        </tr>
-        <tr>
-        <td>
-        <a href= "#LNCRNAs"> <u>LNCRNAs</u></a>
-        </td>
-        </tr>
-        <tr>
-        <td>
-        <a href= "#LincRNAs"> <u>LincRNAs</u></a>
-        </td>
-        </tr>
+        <tr><td>Navigation:</td></tr>
+        <tr><td><a href= "#RefGene"> <u>RefGene</u></a></td></tr>
+        <tr><td><a href= "#microRNAs"><u>microRNAs</u></a></td></tr>
+        <tr><td><a href= "#LNCRNAs"><u>LNCRNAs</u></a></td></tr>
+        <tr><td><a href= "#LincRNAs"><u>LincRNAs</u></a></td></tr>
+        <tr><td><a href= "#CPGI"><u>CPGIslands</u></a></td></tr>
+        <tr><td><a href= "#Vista"><u>VistaEnhancers</u></a></td></tr>
+        <tr><td><a href= "#GWAS"><u>NIH GWAS Catalog</u></a></td></tr>
     </table> 
 </div>
-<br>
-
-
+<br /-->
 
 <div class = "tablebox">
     <table width="100%" >
@@ -209,15 +198,14 @@ Navigation table
             <td>
             <div class="nestedtable">
             <table align="center" width="100%" bgcolor="white"  border="1" cellspacing="0" cellpadding="0">
-            <tr>
+            <tr bgcolor="white">
                 <th>RS No.</th>
                 <th>Chromosome</th>
                 <th>Strand</th>
                 <th>Start</th>
                 <th>End</th>
             </tr> 
-
-			{% paginate snps using "snps_pages" %}
+            {% paginate snps using "snps_pages" %}
             {% for s in snps %}
             <tr>
                 <td>{{ s.rsno }}</td>
@@ -227,8 +215,7 @@ Navigation table
                 <td>{{ s.end }}</td>
             </tr>
             {% endfor %}
-			{% show_pages %}
-			
+            {% show_pages %}
             </td>
         </tr>
     </table>
@@ -257,15 +244,14 @@ Navigation table
             <td>
             <div class="nestedtable">
             <table align="center" width="100%" bgcolor="white"  border="1" cellspacing="0" cellpadding="0">
-            <tr  bgcolor="white" >
+            <tr bgcolor="white">
                 <th>Gene Name</th>
                 <th>Chromosome</th>
                 <th>Strand</th>
                 <th>Start</th>
                 <th>End</th>
             </tr> 
-
-			{% paginate refgene using "refgene_pages" %}
+            {% paginate refgene using "refgene_pages" %}
             {% for r in refgene %}
             <tr>
                 <td>{{ r.name }}</td>
@@ -275,8 +261,7 @@ Navigation table
                 <td>{{ r.end }}</td>
             </tr>
             {% endfor %}
-			{% show_pages %}
-
+            {% show_pages %}
             </td>
         </tr>
     </table>
@@ -304,14 +289,13 @@ Navigation table
             <td>
             <div class="nestedtable">
             <table align="center" width="100%" bgcolor="white" border="1" cellspacing="0" cellpadding="0">
-            <tr>
+            <tr bgcolor="white">
                 <th>Chromosome</th>
                 <th>Strand</th>
                 <th>Start</th>
                 <th>End</th>
             </tr> 
-			
-			{% paginate microrna using "microrna_pages" %}
+            {% paginate microrna using "microrna_pages" %}
             {% for r in microrna %}
             <tr>
                 <td>{{ r.chrom }}</td>
@@ -319,10 +303,8 @@ Navigation table
                 <td>{{ r.start }}</td>
                 <td>{{ r.end }}</td>
             </tr>
-       
             {% endfor %}
             {% show_pages %}
-
             </td>
         </tr>
     </table>
@@ -350,26 +332,22 @@ Navigation table
             <td>
             <div class="nestedtable">
             <table align="center" width="100%" bgcolor="white" border="1" cellspacing="0" cellpadding="0">
-            <tr>
+            <tr bgcolor="white">
                 <th>Chromosome</th>
                 <th>Strand</th>
                 <th>Start</th>
                 <th>End</th>
             </tr> 
-			
-			{% paginate lncrna using "lncrna_pages" %}
+            {% paginate lncrna using "lncrna_pages" %}
             {% for r in lncrna %}
-
             <tr>
                 <td>{{ r.chrom }}</td>
                 <td>{{ r.strand }}</td>
                 <td>{{ r.start }}</td>
                 <td>{{ r.end }}</td>
             </tr>
-       
             {% endfor %}
             {% show_pages %}
-			
             </td>
         </tr>
     </table>
@@ -396,26 +374,22 @@ Navigation table
             <td>
             <div class="nestedtable">
             <table align="center" width="100%" bgcolor="white" border="1" cellspacing="0" cellpadding="0">
-            <tr>
+            <tr bgcolor="white">
                 <th>Chromosome</th>
                 <th>Strand</th>
                 <th>Start</th>
                 <th>End</th>
             </tr> 
-
-			{% paginate lincrna using "lincrna_pages" %}
+            {% paginate lincrna using "lincrna_pages" %}
             {% for r in lincrna %}
-
             <tr>
                 <td>{{ r.chrom }}</td>
                 <td>{{ r.strand }}</td>
                 <td>{{ r.start }}</td>
                 <td>{{ r.end }}</td>
             </tr>
-       
             {% endfor %}
             {% show_pages %}
-			
             </td>
         </tr>
     </table>
@@ -442,26 +416,22 @@ Navigation table
             <td>
             <div class="nestedtable">
             <table align="center" width="100%" bgcolor="white" border="1" cellspacing="0" cellpadding="0">
-            <tr>
+            <tr bgcolor="white">
                 <th>Name</th>
                 <th>Chromosome</th>
                 <th>Start</th>
                 <th>End</th>
             </tr> 
-
-			{% paginate cpgislands using "cpgislands_pages" %}
+            {% paginate cpgislands using "cpgislands_pages" %}
             {% for r in cpgislands %}
-
             <tr>
                 <td>{{ r.name }}</td>
                 <td>{{ r.chrom }}</td>
                 <td>{{ r.start }}</td>
                 <td>{{ r.end }}</td>
-            </tr>
-       
+            </tr>       
             {% endfor %}
             {% show_pages %}
-			
             </td>
         </tr>
     </table>
@@ -488,26 +458,64 @@ Navigation table
             <td>
             <div class="nestedtable">
             <table align="center" width="100%" bgcolor="white" border="1" cellspacing="0" cellpadding="0">
-            <tr>
+            <tr bgcolor="white">
                 <th>Name</th>
                 <th>Chromosome</th>
                 <th>Start</th>
                 <th>End</th>
             </tr> 
-
-			{% paginate vistaenhancers using "vistaenhancers_pages" %}
+            {% paginate vistaenhancers using "vistaenhancers_pages" %}
             {% for r in vistaenhancers %}
-
             <tr>
                 <td>{{ r.name }}</td>
                 <td>{{ r.chrom }}</td>
                 <td>{{ r.start }}</td>
                 <td>{{ r.end }}</td>
             </tr>
-       
             {% endfor %}
             {% show_pages %}
-			
+            </td>
+        </tr>
+    </table>
+    </div>
+</td>
+</table>
+</div>
+
+<div class = "tablebox" id="gwas">
+    <table width="100%" >
+    <div class = "tableheader">
+        <font size="4"> NIH GWAS Catalog  </font><a href= "#top"> <u>Top</u></a>   
+    </div>
+
+        <tr>
+            <td>
+            <div class="results">
+                Results found: {{ gwascatalog|length }}
+            </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+            <div class="nestedtable">
+            <table align="center" width="100%" bgcolor="white" border="1" cellspacing="0" cellpadding="0">
+            <tr bgcolor="white">
+                <th>Disease</th>
+                <th>Chromosome</th>
+                <th>Position</th>
+                <th>SNPs</th>
+            </tr> 
+            {% paginate gwascatalog using "gwascatalog_pages" %}
+            {% for r in gwascatalog %}
+            <tr>
+                <td>{{ r.disease }}</td>
+                <td>{{ r.chrom }}</td>
+                <td>{{ r.pos }}</td>
+                <td>{{ r.snps }}</td>
+            </tr>       
+            {% endfor %}
+            {% show_pages %}
             </td>
         </tr>
     </table>

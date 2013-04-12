@@ -6,11 +6,6 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
-TEMPLATE_CONTEXT_PROCESSORS += (
-    'django.core.context_processors.request',
-)
-
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 	('JC', 'crouching.jahi@gmail.com'),
@@ -87,9 +82,6 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = 'xr2*b9=706+o_)@c*b4t61upee8k(a2m1pm@zo%&s7(h*()pjw'
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -119,6 +111,12 @@ TEMPLATE_DIRS = (
     "www"
 )
 
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'django.core.context_processors.request',
+)
+
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -131,8 +129,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs
     'genedb',
-	'endless_pagination',
-	'pagination',
+    'endless_pagination',
+    'pagination',
 )
 
 # A sample logging configuration. The only tangible logging
