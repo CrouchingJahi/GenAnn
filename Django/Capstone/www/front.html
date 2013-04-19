@@ -7,8 +7,8 @@
 <link href="{{ STATIC_URL }}boootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
 <link href="{{ STATIC_URL }}bootstrap/css/fineuploader.css" rel="stylesheet" type="text/css" />
 <link href="{{ STATIC_URL }}css/styles.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="http://malsup.github.com/jquery.form.js"></script> 
-
+<script type="text/javascript" src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}jquery/multifile_compressed.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
@@ -37,6 +37,51 @@ CODE FROM W3SCHOOLS
 </script>
 
 <!--
+VALIDATE FORM
+-->
+<script>
+function validateForm(){
+	var formobj = document.forms[0];
+	var counter = 0;
+	var db_counter = 0;
+	
+	for (var j = 0; j < formobj.elements.length; j++)
+	{
+		if (formobj.elements[j].type == "checkbox" && formobj.elements[j].name == "databases")
+		{
+			if (formobj.elements[j].checked)
+			{
+				db_counter++;
+			}	
+		}  
+		
+		if (formobj.elements[j].type == "checkbox" && formobj.elements[j].name != "zipped" && formobj.elements[j].name != "databases")
+		{
+			if (formobj.elements[j].checked)
+			{
+				counter++;
+			}	
+		}       
+	}
+	
+	if (db_counter < 1){
+		alert ("Include a Gene/Protein Consequence");
+		return false;
+	}
+	
+	if (counter < 1){
+		alert ("Select a feature to map");
+		return false;
+	}
+	else {
+		$('#loading').show();
+		return true;
+	}
+}
+
+</script>
+
+<!--
 ///////////
 CSS STYLES
 ///////////
@@ -52,7 +97,7 @@ CSS STYLES
 .tableheader
 {
   height:23px;
-  width:100%;
+  width:99.7%;
   background-color:#D9B2B2;
   border-width: 2px; 
   border-color: black;
@@ -73,11 +118,6 @@ CSS STYLES
   font-size:80%;   
 }
 
-body
-{
-  background-image:url("{{ STATIC_URL }}img/bgtest.png");
-}
-
 fieldset 
 { 
   border:0px;
@@ -93,7 +133,7 @@ fieldset
   <img src="{{ STATIC_URL }}img/title2.png">
 </div>
 
-<form class="form-horizontal" action="/result/" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" action="/result/" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 {% csrf_token %}
 <fieldset>
 <font FACE="arial">
@@ -103,6 +143,7 @@ fieldset
 QUERY OPTIONS
 /////////////
 -->  
+<br>
 <div class = "tablebox">
   <table border="1" cellspacing="0" cellpadding="0">
     <col width="220">
@@ -307,10 +348,14 @@ OUTPUT FORMAT
       </td>
     </tr>
   </table>
+  
+  <br>
+  <input type="submit"/> <div id="loading" style="display:none;">
+  <br>
+  <img src="{{ STATIC_URL }}/site_media/static/spinner.gif" alt="" /> Loading!</div>
+   
 </div>
-<br>
 </font>
-<input type="submit" />
 </fieldset>
 </form>
 </body>
