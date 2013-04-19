@@ -20,3 +20,38 @@
     text-align:center;
     padding:5px;
 }
+
+.buttonheader
+{
+  margin:auto;
+  width:1000px;
+}
+
+.tableheader
+{
+  height:23px;
+  width:99.7%;
+  background-color:#D9B2B2;
+  border-width: 2px; 
+  border-color: black;
+  border-style: groove;
+  font-size: 140%;
+  text-indent: 20px
+}
+
+.tablebox
+{
+  height:100%;
+  width:1000px;
+  padding:0px;
+  border:none;
+  margin:0px;
+  margin-left:auto;
+  margin-right:auto;
+  font-size:80%;   
+}
+
+fieldset 
+{ 
+  border:0px;
+}

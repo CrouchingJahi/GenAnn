@@ -7,6 +7,8 @@
 <link href="{{ STATIC_URL }}boootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
 <link href="{{ STATIC_URL }}bootstrap/css/fineuploader.css" rel="stylesheet" type="text/css" />
 <link href="{{ STATIC_URL }}css/styles.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="{{ STATIC_URL }}static/jscript.js"></script>
 <script type="text/javascript" src="http://malsup.github.com/jquery.form.js"></script> 
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery.js"></script>
@@ -16,114 +18,6 @@
 
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <title>GeneAnn Online</title>
-
-<!--
-LOAD THE XML FILE ON THE SERVER
-XML="queryoptions.xml"
-CODE FROM W3SCHOOLS
--->
-<script>
-  if (window.XMLHttpRequest)
-    {// code for IE7+, Firefox, Chrome, Opera, Safari
-      xmlhttp=new XMLHttpRequest();
-    }
-  else
-      {// code for IE6, IE5
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-  xmlhttp.open("GET","{{ STATIC_URL }}/site_media/static/queryoptions.xml",false);
-  xmlhttp.send();
-  xmlDoc=xmlhttp.responseXML; 
-</script>
-
-<!--
-VALIDATE FORM
--->
-<script>
-function validateForm(){
-	var formobj = document.forms[0];
-	var counter = 0;
-	var db_counter = 0;
-	
-	for (var j = 0; j < formobj.elements.length; j++)
-	{
-		if (formobj.elements[j].type == "checkbox" && formobj.elements[j].name == "databases")
-		{
-			if (formobj.elements[j].checked)
-			{
-				db_counter++;
-			}	
-		}  
-		
-		if (formobj.elements[j].type == "checkbox" && formobj.elements[j].name != "zipped" && formobj.elements[j].name != "databases")
-		{
-			if (formobj.elements[j].checked)
-			{
-				counter++;
-			}	
-		}       
-	}
-	
-	if (db_counter < 1){
-		alert ("Include a Gene/Protein Consequence");
-		return false;
-	}
-	
-	if (counter < 1){
-		alert ("Select a feature to map");
-		return false;
-	}
-	else {
-		$('#loading').show();
-		return true;
-	}
-}
-
-</script>
-
-<!--
-///////////
-CSS STYLES
-///////////
--->
-<style>
-
-.buttonheader
-{
-  margin:auto;
-  width:1000px;
-}
-
-.tableheader
-{
-  height:23px;
-  width:99.7%;
-  background-color:#D9B2B2;
-  border-width: 2px; 
-  border-color: black;
-  border-style: groove;
-  font-size: 140%;
-  text-indent: 20px
-}
-
-.tablebox
-{
-  height:100%;
-  width:1000px;
-  padding:0px;
-  border:none;
-  margin:0px;
-  margin-left:auto;
-  margin-right:auto;
-  font-size:80%;   
-}
-
-fieldset 
-{ 
-  border:0px;
-}
-
-</style>
 
 </head>
 
@@ -352,7 +246,7 @@ OUTPUT FORMAT
   <br>
   <input type="submit"/> <div id="loading" style="display:none;">
   <br>
-  <img src="{{ STATIC_URL }}/site_media/static/spinner.gif" alt="" /> Loading!</div>
+  <img src="{{ STATIC_URL }}img/spinner.gif" alt="" /> Loading!</div>
    
 </div>
 </font>
