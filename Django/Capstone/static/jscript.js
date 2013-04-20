@@ -3,6 +3,11 @@ function validateForm(){
 	var counter = 0;
 	var db_counter = 0;
 	
+	if(!document.getElementById("fileInput").value){
+        alert("Upload a file");
+		return false;
+    }
+	
 	for (var j = 0; j < formobj.elements.length; j++)
 	{
 		if (formobj.elements[j].type == "checkbox" && formobj.elements[j].name == "databases")
