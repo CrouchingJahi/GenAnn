@@ -44,7 +44,7 @@ body
   <img src="{{ STATIC_URL }}img/title2.png">
 </div>
 
-<form class="form-horizontal" action="/submit/" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" action="/submit/" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 {% csrf_token %}
 <fieldset>
 <font FACE="arial">
