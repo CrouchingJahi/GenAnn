@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -10,8 +9,7 @@
 
 <script type="text/javascript" src="{{ STATIC_URL }}jscript.js"></script>
 <script type="text/javascript" src="http://malsup.github.com/jquery.form.js"></script> 
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}jquery/multifile_compressed.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/jquery.fineuploader-3.0.min.js"></script>
@@ -20,18 +18,24 @@
 <title>GeneAnn Online</title>
 
 <script>
-if (window.XMLHttpRequest)
+  if (window.XMLHttpRequest)
     {// code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp=new XMLHttpRequest();
+      xmlhttp=new XMLHttpRequest();
     }
-else
-{// code for IE6, IE5
+  else
+      {// code for IE6, IE5
     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-}
-xmlhttp.open("GET","{{ STATIC_URL }}queryoptions.xml",false);
-xmlhttp.send();
-xmlDoc=xmlhttp.responseXML; 
+    }
+  xmlhttp.open("GET","{{ STATIC_URL }}queryoptions.xml",false);
+  xmlhttp.send();
+  xmlDoc=xmlhttp.responseXML; 
 </script>
+<style>
+body
+{
+  background-image:url("{{ STATIC_URL }}img/bgtest.png");
+}
+</style>
 </head>
 
 <body>
@@ -40,7 +44,7 @@ xmlDoc=xmlhttp.responseXML;
   <img src="{{ STATIC_URL }}img/title2.png">
 </div>
 
-<form class="form-horizontal" action="/result/" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+<form class="form-horizontal" action="/submit/" method="post" enctype="multipart/form-data">
 {% csrf_token %}
 <fieldset>
 <font FACE="arial">
@@ -255,12 +259,10 @@ OUTPUT FORMAT
       </td>
     </tr>
   </table>
-  
   <br>
   <input type="submit"/> <div id="loading" style="display:none;">
   <br>
   <img src="{{ STATIC_URL }}img/spinner.gif" alt="" /> Loading!</div>
-   
 </div>
 </font>
 </fieldset>

@@ -22,7 +22,7 @@
 <a name = "top"> </a> 
 
 <div class="buttonheader">
-  <img src="img/title2.png">
+  <img src="{{ STATIC_URL }}img/title2.png">
 </div>
 
 <a name = "top"> </a> 
@@ -36,8 +36,10 @@ Top info
 -->
 <div class = "toptable">
     <table>
-        <col width="200">
-        <col width="50">
+        <colgroup>
+            <col width="200">
+            <col width="50">
+        </colgroup>
         <tr>
         <td>
         Number of SNPs in query:
@@ -52,16 +54,16 @@ Top info
 
 <div class="toptable">
     <form name="rna">
-        <label><input type="checkbox" name="include" id="cmicro" checked>microRNAs</label>
-        <label><input type="checkbox" name="include" id="clnc" checked>LNCRNAs</label>
-        <label><input type="checkbox" name="include" id="clinc" checked>LincRNAs</label>
-        <label><input type="checkbox" name="include" id="ccpgi" checked>CPGIslands</label>
-        <label><input type="checkbox" name="include" id="cvsta" checked>VistaEnhancers</label>
-        <label><input type="checkbox" name="include" id="cgwas" checked>NIH GWAS Catalog</label>
+        <label><input type="checkbox" name="include" id="cmicro"{% if c_microrna %} checked{% endif %}>microRNAs</label>
+        <label><input type="checkbox" name="include" id="clnc"{% if c_lncrna %} checked{% endif %}>LNCRNAs</label>
+        <label><input type="checkbox" name="include" id="clinc"{% if c_lincrna %} checked{% endif %}>LincRNAs</label>
+        <label><input type="checkbox" name="include" id="ccpgi"{% if c_cpgislands %} checked{% endif %}>CPGIslands</label>
+        <label><input type="checkbox" name="include" id="cvsta"{% if c_vistaenhancers %} checked{% endif %}>VistaEnhancers</label>
+        <label><input type="checkbox" name="include" id="cgwas"{% if c_gwascatalog %} checked{% endif %}>NIH GWAS Catalog</label>
     </form>
 </div>
 <script style="text/javascript">
-    $('input:checkbox').change(function() {        
+    function checks() {        
         var micro = document.getElementById('cmicro');
         var lnc = document.getElementById('clnc');
         var linc = document.getElementById('clinc');
@@ -74,7 +76,18 @@ Top info
         $('#cpgi').toggle(cpgi.checked);
         $('#vsta').toggle(vsta.checked);
         $('#gwas').toggle(gwas.checked);
+    }
+    
+    $('input:checkbox').change(function() {        
+        checks();
     });
+    
+    $(document).ready(function(){
+        checks();
+    });
+</script>
+<script type="text/javascript">
+    $('#download').click(function(){ location.replace('/results/'); });
 </script>
 <br />
 
@@ -137,9 +150,9 @@ Top info
     </div>
 </td>
 </table>
+{% include "tem_dlbutton.html" with link="snps" %}
 </div>
 <br />
-
 <div class = "tablebox">
     <table width="100%" >
 
@@ -183,6 +196,7 @@ Top info
     </div>
 </td>
 </table>
+{% include "tem_dlbutton.html" with link="refg" %}
 </div>
 <br />
 <div class = "tablebox" id="micro">
@@ -226,6 +240,7 @@ Top info
     </div>
 </td>
 </table>
+{% include "tem_dlbutton.html" with link="mrna" %}
 </div>
 <br />
 <div class = "tablebox" id="lnc">
@@ -269,6 +284,7 @@ Top info
     </div>
 </td>
 </table>
+{% include "tem_dlbutton.html" with link="lrna" %}
 </div>
 <br />
 <div class = "tablebox" id="linc">
@@ -311,8 +327,9 @@ Top info
     </div>
 </td>
 </table>
+{% include "tem_dlbutton.html" with link="irna" %}
 </div>
-<br>
+<br />
 <div class = "tablebox" id="cpgi">
     <table width="100%" >
     <div class = "tableheader">
@@ -353,8 +370,9 @@ Top info
     </div>
 </td>
 </table>
+{% include "tem_dlbutton.html" with link="cpgi" %}
 </div>
-<br>
+<br />
 <div class = "tablebox" id="vsta">
     <table width="100%" >
     <div class = "tableheader">
@@ -395,10 +413,9 @@ Top info
     </div>
 </td>
 </table>
+{% include "tem_dlbutton.html" with link="vsta" %}
 </div>
-
-<br>
-
+<br />
 <div class = "tablebox" id="gwas">
     <table width="100%" >
     <div class = "tableheader">
@@ -436,11 +453,12 @@ Top info
             </td>
         </tr>
     </table>
-    </div>
+    </div> 
 </td>
 </table>
+{% include "tem_dlbutton.html" with link="gwas" %}
 </div>
-
+<br />
 </body>
 
 </html>

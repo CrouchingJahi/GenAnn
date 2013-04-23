@@ -19,42 +19,49 @@ class RefGene(models.Model):
     cdsstartstat = models.CharField(max_length=18, db_column='cdsStartStat', blank=True)
     cdsendstat = models.CharField(max_length=18, db_column='cdsEndStat', blank=True)
     exonframes = models.TextField(db_column='exonFrames', blank=True)
+    @staticmethod
+    def csvheader():
+        return ["bin", "name", "chrom", "strand", "txStart", "txEnd", "cdsStart", "cdsEnd", "exonCount", "exonStarts", "exonEnds", "score", "name2", "cdsStartStat", "cdsEndStat", "exonFrames"]
+    def csv(self):
+        return [str(self.bin), self.name, self.chrom, self.strand, str(self.start), str(self.end), str(self.cdsstart), str(self.cdsend), str(self.exoncount), self.exonstarts, self.exonends, str(self.score), self.name2, self.cdsstartstat, self.cdsendstat, self.exonframes]
     def __unicode__(self):
         return self.name
     class Meta:
         db_table = u'refgene'
-
-class LincRNA(models.Model):
+        
+class RNA(models.Model):
     id = models.IntegerField(primary_key=True)
     chrom = models.CharField(max_length=255)
-    source = models.CharField(max_length=45, blank=True)
     type = models.CharField(max_length=255)
     start = models.IntegerField()
     end = models.IntegerField()
     strand = models.CharField(max_length=1)
+    @staticmethod
+    def csvheader():
+        return ["chrom", "type", "start", "end", "strand"]
+    def csv(self):
+        return [self.chrom, self.type, str(self.start), str(self.end), self.strand]
+    class Meta:
+        abstract = True
+
+class LincRNA(RNA):
+    source = models.CharField(max_length=45, blank=True)
+    @staticmethod
+    def csvheader():
+        return ["chrom", "type", "source", "start", "end", "strand"]
+    def csv(self):
+        return [self.chrom, self.type, self.source, str(self.start), str(self.end), self.strand]
     class Meta:
         db_table = u'lincrna'
 
-class LNCRNA(models.Model):
-    id = models.IntegerField(primary_key=True)
-    chrom = models.CharField(max_length=255)
-    type = models.CharField(max_length=255)
-    start = models.IntegerField()
-    end = models.IntegerField()
-    strand = models.CharField(max_length=1)
+class LNCRNA(RNA):
     class Meta:
         db_table = u'lncipedia'
 
-class MicroRNA(models.Model):
-    id = models.IntegerField(primary_key=True)
-    chrom = models.CharField(max_length=255)
-    type = models.CharField(max_length=255)
-    start = models.IntegerField()
-    end = models.IntegerField()
-    strand = models.CharField(max_length=1)
+class MicroRNA(RNA):
     class Meta:
         db_table = u'microrna'
-        
+
 class CPGIslands(models.Model):
     id = models.IntegerField(primary_key=True)
     bin = models.IntegerField()
@@ -68,6 +75,11 @@ class CPGIslands(models.Model):
     percpg = models.FloatField(db_column='perCpg')
     pergc = models.FloatField(db_column='perGc')
     obsexp = models.FloatField(db_column='obsExp')
+    @staticmethod
+    def csvheader():
+        return ["bin", "chrom", "chromStart", "chromEnd", "name", "length", "cpgNum", "gcNum", "perCpg", "perGc", "obsExp"]
+    def csv(self):
+        return [str(self.bin), self.chrom, str(self.start), str(self.end), self.name, str(self.length), str(self.cpgNum), str(self.gcNum), str(self.perCpg), str(self.perGc), str(self.obsExp)]
     class Meta:
         db_table = u'cpgislandext'
 
@@ -79,42 +91,40 @@ class VistaEnhancers(models.Model):
     end = models.IntegerField(db_column='chromEnd')
     name = models.CharField(max_length=255)
     score = models.IntegerField()
+    @staticmethod
+    def csvheader():
+        return ["bin", "chrom", "chromStart", "chromEnd", "name", "score"]
+    def csv(self):
+        return [str(self.bin), self.chrom, str(self.start), str(self.end), self.name, str(self.score)]
     class Meta:
         db_table = u'vistaenhancers'
-
-class SNP1(models.Model):
+        
+class SNP(models.Model):
     id = models.IntegerField(primary_key=True)
     chrom = models.CharField(max_length=255)
     rsno = models.CharField(max_length=45)
     start = models.IntegerField()
     end = models.IntegerField()
     strand = models.CharField(max_length=1)
+    @staticmethod
+    def csvheader():
+        return ["rsno", "chrom", "strand", "start", "end"]
+    def csv(self):
+        return [self.rsno, self.chrom, self.strand, str(self.start), str(self.end)]
     def __unicode__(self):
         return self.rsno
+    class Meta:
+        abstract = True
+        
+class SNP1(SNP):
     class Meta:
         db_table = u'dbsnp_chr1'
         
-class SNP2(models.Model):
-    id = models.IntegerField(primary_key=True)
-    chrom = models.CharField(max_length=255)
-    rsno = models.CharField(max_length=45)
-    start = models.IntegerField()
-    end = models.IntegerField()
-    strand = models.CharField(max_length=1)
-    def __unicode__(self):
-        return self.rsno
+class SNP2(SNP):
     class Meta:
         db_table = u'dbsnp_chr2'
     
-class SNP3(models.Model):
-    id = models.IntegerField(primary_key=True)
-    chrom = models.CharField(max_length=255)
-    rsno = models.CharField(max_length=45)
-    start = models.IntegerField()
-    end = models.IntegerField()
-    strand = models.CharField(max_length=1)
-    def __unicode__(self):
-        return self.rsno
+class SNP3(SNP):
     class Meta:
         db_table = u'dbsnp_chr3'
     
@@ -154,6 +164,11 @@ class GWASCatalog(models.Model):
     number_95ci = models.CharField(max_length=40, db_column=u'95CI', blank=True)
     platform = models.CharField(max_length=255, blank=True)
     cnv = models.CharField(max_length=1, blank=True)
+    @staticmethod
+    def csvheader():
+        return ["dateAdded", "pubmedID", "firstAuthor", "pubdate", "journal", "link", "study", "disease", "initSampleSize", "replSampleSize", "region", "chrom", "pos", "reportedGenes", "mappedGene", "upstreamGeneID", "downstreamGeneID", "snpGeneIDs", "upstreamGeneDistance", "downstreamGeneDistance", "riskAllele", "snps", "merged", "snpIDCurrent", "context", "intergenic", "riskAlleleFrequency", "pValue", "pValuemlog", "pValueText", "ORorbeta", "95CI", "platform", "cnv"]
+    def csv(self):
+        return [self.dateadded, str(self.pubmedid), self.firstauthor, self.pubdate, self.journal, self.link, self.study, self.disease, self.initsamplesize, self.replsamplesize, self.region, self.chrom, str(self.pos), self.reportedgenes, self.mappedgene, str(self.upstreamgeneid), str(self.downstreamgeneid), self.snpgeneids, str(self.upstreamgenedistance), str(self.downstreamgenedistance), self.riskallele, self.snps, self.merged, str(self.snpidcurrent), self.context, str(self.intergenic), self.riskallelefrequency, str(self.pvalue), str(self.pvaluemlog), self.pvaluetext, self.ororbeta, self.number_95ci, self.platform, self.cnv]
     def __unicode__(self):
         return 'GWAS PubMed ' + self.pubmedid
     class Meta:
