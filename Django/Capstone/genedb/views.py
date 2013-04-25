@@ -15,6 +15,7 @@ def submit(request):
     batch = FileForm(request.POST, request.FILES)
     
     if batch.is_valid():
+        # Expected file format is with the rsgarray function
         rsgarray(request.FILES['batch'], rsnums, genenames)
     # form = DBSForm(request.POST)
     # if form.is_valid():
@@ -28,7 +29,6 @@ def submit(request):
     inclds = request.POST.getlist('includes', [])
     elmnts = request.POST.getlist('regulatory', [])
     diseas = request.POST.getlist('disease', [])
-    
     request.session['cpgic'] = 'CPGIslands' in inclds
     request.session['enhac'] = 'Enhancers' in inclds
     request.session['mrnac'] = 'microRNA' in elmnts
@@ -173,9 +173,12 @@ def sformfilter(set, chromosome, strandside, min, max):
     return ret
 
 # Given a file, populates the arrays rs and gene with the parsed rsnumbers and gene names.
+# The expected file format is an rsnumber, tab for separation, and then a gene name that corresponds to that rsnumber.
+#  The gene name assists in finding out which chomosome that rsnumber is on and has the potential to greatly increase query speed,
+#   since the tables of DBSNP are separated by chromosome.
+#  However, a row is allowed to have only one column, and no gene name.
 def rsgarray(file, rs, gene):
-    # Throws a list index out of range error if the input file is not correctly formatted with 2 columns per line or isn't tab separated.
-    # Needs to be more robust
+    # If there is only one column, the first column is stored as the rsnumber and the gene name column for that row is empty.
     while 1:
         line = file.readline()
         if not line: break;
@@ -186,7 +189,7 @@ def rsgarray(file, rs, gene):
         else:
             gene.append("")
 
-# Given an rs number, returns the relevant dbsnp entry by searching all chromosomes
+# Given an rs number, searches all chromosomes in DBSNP until it finds the matching entry.
 def findsnp(rsno):
     x = 1
     # Only chromosomes 1-3 are available, so this stops at 3.
@@ -198,7 +201,7 @@ def findsnp(rsno):
         x = x + 1
     return SNP1.objects.none()
 
-# Given the string "chr1", returns the database SNP1, and so on.
+# Given the string "chr1", returns the model object SNP1, and so on.
 def chrtosnp(chr):
     snp = "SNP" + chr[3:]
     return eval(snp)
