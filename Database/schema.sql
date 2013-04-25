@@ -156,7 +156,7 @@ CREATE TABLE `cpgislandext` (
   PRIMARY KEY (`id`),
   KEY `chrom` (`chrom`(14),`bin`),
   KEY `chrom_2` (`chrom`(14),`chromStart`)
-) ENGINE=InnoDB AUTO_INCREMENT=33356 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29280 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -175,7 +175,7 @@ CREATE TABLE `dbsnp_chr1` (
   `strand` char(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3538891 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3493958 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -194,7 +194,7 @@ CREATE TABLE `dbsnp_chr2` (
   `strand` char(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3735496 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3722836 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,7 +213,7 @@ CREATE TABLE `dbsnp_chr3` (
   `strand` char(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3604426 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3580315 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,6 +262,53 @@ CREATE TABLE `django_site` (
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `gwascatalog`
+--
+
+DROP TABLE IF EXISTS `gwascatalog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `gwascatalog` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `dateAdded` varchar(10) DEFAULT NULL,
+  `pubmedID` int(10) DEFAULT NULL,
+  `firstAuthor` varchar(255) DEFAULT NULL,
+  `pubdate` varchar(10) DEFAULT NULL,
+  `journal` varchar(255) DEFAULT NULL,
+  `link` varchar(255) DEFAULT NULL,
+  `study` varchar(255) DEFAULT NULL,
+  `disease` varchar(255) DEFAULT NULL,
+  `initSampleSize` varchar(255) DEFAULT NULL,
+  `replSampleSize` varchar(255) DEFAULT NULL,
+  `region` varchar(10) DEFAULT NULL,
+  `chrom` varchar(2) DEFAULT NULL,
+  `pos` int(10) DEFAULT NULL,
+  `reportedGenes` varchar(255) DEFAULT NULL,
+  `mappedGene` varchar(255) DEFAULT NULL,
+  `upstreamGeneID` int(10) DEFAULT NULL,
+  `downstreamGeneID` int(10) DEFAULT NULL,
+  `snpGeneIDs` varchar(255) DEFAULT NULL,
+  `upstreamGeneDistance` double DEFAULT NULL,
+  `downstreamGeneDistance` double DEFAULT NULL,
+  `riskAllele` varchar(255) DEFAULT NULL,
+  `snps` varchar(255) DEFAULT NULL,
+  `merged` char(1) DEFAULT NULL,
+  `snpIDCurrent` int(10) DEFAULT NULL,
+  `context` varchar(255) DEFAULT NULL,
+  `intergenic` int(5) DEFAULT NULL,
+  `riskAlleleFrequency` varchar(255) DEFAULT NULL,
+  `pValue` double DEFAULT NULL,
+  `pValuemlog` double DEFAULT NULL,
+  `pValueText` varchar(255) DEFAULT NULL,
+  `ORorbeta` varchar(100) DEFAULT NULL,
+  `95CI` varchar(40) DEFAULT NULL,
+  `platform` varchar(255) DEFAULT NULL,
+  `cnv` char(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11006 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,7 +413,7 @@ CREATE TABLE `vistaenhancers` (
   PRIMARY KEY (`id`),
   KEY `name` (`name`(16)),
   KEY `chrom` (`chrom`(14),`bin`)
-) ENGINE=InnoDB AUTO_INCREMENT=2048 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1340 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -378,4 +425,4 @@ CREATE TABLE `vistaenhancers` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-03-29 17:18:50
+-- Dump completed on 2013-04-25 19:10:20
