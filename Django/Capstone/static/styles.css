@@ -1,6 +1,18 @@
 ﻿body {
-    padding-left:2em;
-    padding-bottom:2em;
+    margin: 0;
+    padding-left: 2em;
+    padding-bottom: 2em;
+    color: #333333;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+table {
+    max-width: 100%;
+    background-color: transparent;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 .resulttbl {
@@ -55,11 +67,9 @@
 {
     height:100%;
     width: 983px;
-    padding-bottom:1em;
+    padding:0 0 1em 0;
     border:1px solid black;
-    margin:0;
-    margin-left:auto;
-    margin-right:auto;
+    margin:0 auto;
     background: #E6E6E6;
 }
 
@@ -111,7 +121,12 @@
     margin-right:auto;
 }
 
-fieldset 
-{ 
-  border:0px;
+form .dlb {
+    margin: 1em 0 0 0;
+}
+
+fieldset {
+    padding: 0;
+    margin: 0;
+    border: 0;
 }

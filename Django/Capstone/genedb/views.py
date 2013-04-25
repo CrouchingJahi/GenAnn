@@ -36,6 +36,7 @@ def submit(request):
     request.session['irnac'] = 'lincRNA' in elmnts
     request.session['dbsnc'] = 'Map' in diseas
     
+    # Perform the query and pass the results to the results page
     location = SNP1.objects.none()
     refg = RefGene.objects.none()
     mrna = MicroRNA.objects.none()
@@ -45,36 +46,41 @@ def submit(request):
     vsta = VistaEnhancers.objects.none()
     gwas = GWASCatalog.objects.none()
     
+    # Gather locations from the list of snps
     x = 0
     while (x < len(rsnums)):
-        chrgene = RefGene.objects.filter(name__exact=genenames[x])
-        chrm = chrgene.latest('id').chrom
-        db = chrtosnp(chrm)
-        location = location | db.objects.filter(rsno__exact=rsnums[x])
-        for result in location.iterator():
-            chrom = result.chrom
-            strand = result.strand
-            min = str(result.start)
-            max = str(result.end)
-            
-            qrefg = sformfilter(RefGene.objects, chrom, strand, min, max)
-            refg = refg | qrefg
-            
-            qmrna = sformfilter(MicroRNA.objects, chrom, strand, min, max)
-            mrna = mrna | qmrna
-            qlrna = sformfilter(LNCRNA.objects, chrom, strand, min, max)
-            lrna = lrna | qlrna
-            qirna = sformfilter(LincRNA.objects, chrom, strand, min, max)
-            irna = irna | qirna
-            
-            qcpgi = formfilter(CPGIslands.objects, chrom, min, max)
-            cpgi = cpgi | qcpgi
-            qvsta = formfilter(VistaEnhancers.objects, chrom, min, max)
-            vsta = vsta | qvsta
-        
+        if (len(genenames[x]) == 0):
+            location = location | findsnp(rsnums[x])
+        else:
+            chrgene = RefGene.objects.filter(name__exact=genenames[x])
+            chrm = chrgene.latest('id').chrom
+            db = chrtosnp(chrm)
+            location = location | db.objects.filter(rsno__exact=rsnums[x])
         rexp = rsnums[x] + "$|" + rsnums[x] + ","
         gwas = GWASCatalog.objects.filter(snps__regex=rexp)
         x = x + 1
+    
+    # Use the found locations to query the tables
+    for result in location.iterator():
+        chrom = result.chrom
+        strand = result.strand
+        min = str(result.start)
+        max = str(result.end)
+        
+        qrefg = sformfilter(RefGene.objects, chrom, strand, min, max)
+        refg = refg | qrefg
+        
+        qmrna = sformfilter(MicroRNA.objects, chrom, strand, min, max)
+        mrna = mrna | qmrna
+        qlrna = sformfilter(LNCRNA.objects, chrom, strand, min, max)
+        lrna = lrna | qlrna
+        qirna = sformfilter(LincRNA.objects, chrom, strand, min, max)
+        irna = irna | qirna
+        
+        qcpgi = formfilter(CPGIslands.objects, chrom, min, max)
+        cpgi = cpgi | qcpgi
+        qvsta = formfilter(VistaEnhancers.objects, chrom, min, max)
+        vsta = vsta | qvsta
         
     request.session['location'] = location
     request.session['refg'] = refg
@@ -87,6 +93,7 @@ def submit(request):
     
     return HttpResponseRedirect('/result/')
 
+# Retrieves the query results from the session and displays them
 def result(request):
     t = loader.get_template('results.html')
     
@@ -174,7 +181,22 @@ def rsgarray(file, rs, gene):
         if not line: break;
         parts = string.split(line,'\t')
         rs.append(string.strip(parts[0]))
-        gene.append(string.strip(parts[1]))
+        if (len(parts) > 1):
+            gene.append(string.strip(parts[1]))
+        else:
+            gene.append("")
+
+# Given an rs number, returns the relevant dbsnp entry by searching all chromosomes
+def findsnp(rsno):
+    x = 1
+    # Only chromosomes 1-3 are available, so this stops at 3.
+    while (x <= 3):
+        db = eval("SNP" + str(x))
+        cur = db.objects.filter(rsno__exact=rsno)
+        if len(cur) > 0:
+            return cur
+        x = x + 1
+    return SNP1.objects.none()
 
 # Given the string "chr1", returns the database SNP1, and so on.
 def chrtosnp(chr):
